@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Generator by Aanand mishra</title>
+    
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ---=== CSS for Styling ===--- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: left;
+            color: #34495e;
+        }
+        
+        .input-field, .file-input-label {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .file-input-container input[type="file"] {
+            display: none;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            cursor: pointer;
+            background-color: #ecf0f1;
+            text-align: center;
+        }
+        
+        .file-input-label:hover {
+            background-color: #dfe6e9;
+        }
+        
+        #fileName {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-download {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            display: none; /* Hidden by default */
+        }
+
+        #qr-code-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px dashed #bdc3c7;
+            border-radius: 8px;
+            min-height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+
+        .footer span {
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+    
+    /* ---=== Colorful CSS Styling ===--- */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #a8edea, #fed6e3); /* Light and fresh background gradient */
+        color: #4a4a4a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .container {
+        background-color: #ffffff;
+        padding: 40px 50px; /* Slightly more padding */
+        border-radius: 15px; /* More rounded corners */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+        width: 100%;
+        max-width: 600px; /* Slightly wider container */
+        text-align: center;
+    }
+
+    .header {
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 3rem; /* Larger title */
+        margin: 0;
+        color: #6c5ce7; /* Vibrant purple for the title */
+    }
+
+    .header p {
+        font-size: 1.2rem;
+        color: #636e72;
+        margin-top: 8px;
+    }
+
+    .input-group {
+        margin-bottom: 25px;
+    }
+
+    .input-group label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: left;
+        color: #2d3436;
+    }
+
+    .input-field, .file-input-label {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #dcdde1;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #00b894; /* Focus color */
+    }
+
+    .file-input-container input {
+        display: none;
+    }
+
+    .file-input-label {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #f5f6fa;
+        text-align: center;
+        color: #576574;
+        border: 1px dashed #ced6e0; /* Dashed border for file input */
+    }
+
+    .file-input-label:hover {
+        background-color: #e0e0e0;
+    }
+
+    #fileName {
+        margin-top: 12px;
+        font-style: italic;
+        color: #778ca3;
+    }
+
+    .btn {
+        background: linear-gradient(45deg, #00b894, #00a884); /* Vibrant green gradient */
+        color: white;
+        padding: 16px 30px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: 600;
+        width: 100%;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 15px;
+    }
+
+    .btn:hover {
+        box-shadow: 0 7px 20px rgba(0, 184, 148, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .btn-download {
+        background: linear-gradient(45deg, #f39c12, #e67e22); /* Orange gradient for download */
+        display: none; /* Hidden by default */
+    }
+
+    #qr-code-container {
+        margin-top: 40px;
+        padding: 25px;
+        border: 2px solid #e0e0e0; /* Solid border for QR code container */
+        border-radius: 10px;
+        min-height: 280px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f9f9f9; /* Light background for the QR code */
+    }
+
+    .alert {
+        background-color: #ffebee; /* Light red for alert */
+        color: #d32f2f;
+        padding: 12px;
+        border-radius: 10px;
+        margin-top: 18px;
+        font-size: 1rem;
+        text-align: left;
+        border: 1px solid #ef9a9a;
+  </<style>
+    }
+
+    .footer {
+        margin-top: 40px;
+        font-size: 1rem;
+        color: #718093;
+    }
+
+    .footer span {
+        font-weight: 700;
+        color: #4a5568;
+    }
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>QR generator</h1>
+            <p>Moden jamane ka</p>
+        </div>
+
+        <div class="input-group">
+            <label for="text-input">Enter Text or URL</label>
+            <input type="text" id="text-input" class="input-field" placeholder="https://example.com">
+            <button id="generate-text-btn" class="btn">Generate from Text/URL</button>
+        </div>
+        
+        <div class="input-group">
+             <label for="file-input">Or Upload a Photo</label>
+             <div class="file-input-container">
+                <input type="file" id="file-input" accept="image/*,video/*">
+                <label for="file-input" class="file-input-label">Click to choose a file</label>
+             </div>
+             <div id="fileName">No file selected</div>
+             <div id="file-alert" class="alert" style="display: none;">
+                <strong>Warning:</strong> For best results, use small images (&lt; 200KB). Video files will create very complex QR codes that likely won't work.
+             </div>
+        </div>
+
+        <div id="qr-code-container">
+            Your QR code will appear here
+        </div>
+        
+        <button id="download-btn" class="btn btn-download">Download QR Code</button>
+
+        <div class="footer">
+            by <span>Aanand mishra</span>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const textInput = document.getElementById('text-input');
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('fileName');
+        const fileAlert = document.getElementById('file-alert');
+        const generateTextBtn = document.getElementById('generate-text-btn');
+        const qrContainer = document.getElementById('qr-code-container');
+        const downloadBtn = document.getElementById('download-btn');
+
+        let qrCode; // To hold the QR code instance
+
+        // --- Initialize QR Code Styling ---
+        const qrCodeOptions = {
+            width: 250,
+            height: 250,
+            type: 'svg',
+            data: 'QR generator by Aanand mishra', // Default data
+            dotsOptions: {
+                color: '#2c3e50',
+                type: 'rounded'
+            },
+            backgroundOptions: {
+                color: '#ffffff',
+            },
+            cornersSquareOptions: {
+                color: '#2980b9',
+                type: 'extra-rounded'
+            },
+            cornersDotOptions: {
+                color: '#3498db',
+                type: 'dot'
+            }
+        };
+        
+        // --- Create initial QR code instance ---
+        qrCode = new QRCodeStyling(qrCodeOptions);
+        qrCode.append(qrContainer);
+
+        // --- Event Listener for Text/URL Button ---
+        generateTextBtn.addEventListener('click', () => {
+            const data = textInput.value.trim();
+            if (data) {
+                fileInput.value = ''; // Clear file input
+                fileNameDisplay.textContent = 'No file selected';
+                fileAlert.style.display = 'none';
+                updateQRCode(data);
+            } else {
+                alert('Please enter some text or a URL.');
+            }
+        });
+
+        // --- Event Listener for File Input ---
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                textInput.value = ''; // Clear text input
+                fileNameDisplay.textContent = file.name;
+                fileAlert.style.display = 'block';
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    // Check for very large data URLs
+                    if(dataUrl.length > 2500) {
+                         console.warn("Data URL is very long. QR code will be extremely dense.");
+                    }
+                    updateQRCode(dataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // --- Function to Update QR Code ---
+        function updateQRCode(data) {
+            if (!qrCode) {
+                qrCode = new QRCodeStyling(qrCodeOptions);
+                qrCode.append(qrContainer);
+            }
+            qrCode.update({ data: data });
+            downloadBtn.style.display = 'block';
+        }
+        
+        // --- Event Listener for Download Button ---
+        downloadBtn.addEventListener('click', () => {
+            if(qrCode) {
+                qrCode.download({ name: 'qr-code-by-aanand', extension: 'png' });
+            }
+        });
+
+    </script>
+</body>
+</html>
